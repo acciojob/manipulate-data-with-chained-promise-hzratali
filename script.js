@@ -1,34 +1,28 @@
-//your JS code here. If required.
-function manipulateData(array) {
+const arr = [1, 2, 3, 4];
+function promise(arr, time) {
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve(array);
-    }, 3000);
+      resolve(arr);
+    }, time);
   });
 }
-
-const outputElement = document.getElementById('output');
-
-manipulateData([1, 2, 3, 4])
-  .then((array) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const evenNumbers = array.filter(num => num % 2 === 0);
-        resolve(evenNumbers);
-      }, 1000);
+const op = document.getElementById("output");
+promise(arr, 3000)
+  .then((res) => {
+    const evenArr = res.filter((num) => {
+      return num % 2 === 0;
     });
+    return promise(evenArr, 1000);
   })
-  .then((evenNumbers) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const multipliedNumbers = evenNumbers.map(num => num * 2);
-        resolve(multipliedNumbers);
-      }, 2000);
+  .then((res) => {
+
+    op.innerText = res;
+    const multiplyBy2 = res.map((num) => {
+      return num * 2;
     });
+
+    return promise(multiplyBy2, 2000);
   })
-  .then((result) => {
-    outputElement.textContent = result.join(', ');
-  })
-  .catch((error) => {
-    console.error('Error:', error);
-  });
+  .then((res) => {
+    op.innerText = res;
+  });
